@@ -1,0 +1,670 @@
+unit sample;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, Cappta_Gp_Api_Com_TLB, XMLDoc, XMLIntf,
+  Vcl.Samples.Spin, System.VarUtils, ActiveX, System.StrUtils, Vcl.ExtCtrls,
+  Vcl.Mask;
+
+type
+  TForm1 = class(TForm)
+    LabelValorPagamentoDebito: TLabel;
+    PageControlPrincipal: TPageControl;
+    TabSheetPagamentoDebito: TTabSheet;
+    TabSheetPagamentoCredito: TTabSheet;
+    TabSheetPagamentoCrediario: TTabSheet;
+    TabSheetReimpressaoCupom: TTabSheet;
+    TabSheetCancelamento: TTabSheet;
+    TabSheet1: TTabSheet;
+    TabSheetTicketCar: TTabSheet;
+    ButtonExecutarDebito: TButton;
+    LabelUsarMultiTef: TLabel;
+    RadioButtonUsarMultiTef: TRadioButton;
+    RadioButtonNaoUsarMultiTef: TRadioButton;
+    LabelQuantidadeDePagamentosMultiTef: TLabel;
+    FloatSpinEditQuantidadeDePagamentosMultiTef: TSpinEdit;
+    GroupBoxResultado: TGroupBox;
+    TMemoResultado: TMemo;
+    LabelValorPagamentoCredito: TLabel;
+    LabelPagamentoCreditoComParcelas: TLabel;
+    LabelTipoParcelamentoPagamentoCredito: TLabel;
+    LabelQuantidadeParcelasPagamentoCredito: TLabel;
+    RadioButtonPagamentoCreditoComParcelas: TRadioButton;
+    RadioButtonPagamentoCreditoSemParcelas: TRadioButton;
+    ComboBoxTipoParcelamentoPagamentoCredito: TComboBox;
+    FloatSpinEditQuantidadeParcelasPagamentoCredito: TSpinEdit;
+    LabelValorPagamentoCrediario: TLabel;
+    LabelQuantidadeParcelasPagamentoCrediario: TLabel;
+    FloatSpinEditQuantidadeParcelasPagamentoCrediario: TSpinEdit;
+    LabelNumeroControleReimpressaoCupom: TLabel;
+    LabelReimprimirUltimoCupom: TLabel;
+    RadioButtonReimprimirUltimoCupom: TRadioButton;
+    RadioButtonNaoReimprimirUltimoCupom: TRadioButton;
+    TextEditNumeroControleReimpressaoCupom: TEdit;
+    LabelSenhaAdministrativaCancelamento: TLabel;
+    LabelNumeroControleCancelamento: TLabel;
+    EditSenhaAdministrativaCancelamento: TEdit;
+    TextEditNumeroControleCancelamento: TEdit;
+    LabelTipoEntradaPinpad: TLabel;
+    ComboBoxTipoInformacaoPinpad: TComboBox;
+    LabelValorPagamentoTicketCar: TLabel;
+    LabelNumeroSerialPagamentoTicketCar: TLabel;
+    EditNumeroSerialTicketCar: TEdit;
+    LabelNumeroDocumentoFiscalPagamentoTicketCar: TLabel;
+    EditNumeroDocumentoFiscalTicketCar: TEdit;
+    ButtonExecutarPagamentoTicketCar: TButton;
+    ButtonExecutarCredito: TButton;
+    ButtonExecutarCrediario: TButton;
+    ButtonExecutarReimpressao: TButton;
+    ButtonExecutarCancelamento: TButton;
+    ButtonSolicitarInformacaoPinpad: TButton;
+    PanelViaASerImprimida: TGroupBox;
+    RadioButtonReimprimirViaLoja: TRadioButton;
+    RadioButtonReimprimirViaCliente: TRadioButton;
+    RadioButtonReimprimirTodasVias: TRadioButton;
+    PanelExibirInterface: TPanel;
+    lblConfiguracaoInterface: TLabel;
+    RadioButtonInterfaceVisivel: TRadioButton;
+    RadioButtonInterfaceInvisivel: TRadioButton;
+    FloatSpinEditValorPagamentoDebito: TMaskEdit;
+    TEditValorPagamentoCrediario: TMaskEdit;
+    TEditValorPagamentoCredito: TMaskEdit;
+    TEditValorPagamentoTicketCar: TMaskEdit;
+    procedure AutenticarPdv(cliente: IClienteCappta);
+    procedure RadioButtonInterfaceVisivelClick(Sender: TObject);
+    procedure RadioButtonInterfaceInvisivelClick(Sender: TObject);
+    procedure ConfigurarModoIntegracao(exibirInterface: boolean);
+    function ConcatenarCupons(mensagemAprovada: string; cupom: string) : string;
+    procedure FormCreate(Sender: TObject);
+    function BuscarNodeXML(XMLAutenticacao: TXMLDocument; nomeNode: string) : IXMLNode;
+    procedure ButtonExecutarDebitoClick(Sender: TObject);
+    procedure ExibirMensagem(mensagem: IMensagem);
+    function DeveIniciarMultiCartoes() : boolean;
+    procedure IniciarMultiCartoes();
+    procedure DesabilitarControlesMultiTef();
+    procedure RequisitarParametros(requisicaoParametros: IRequisicaoParametro);
+    procedure IterarOperacaoTef();
+    procedure DesabilitarBotoes();
+    procedure HabilitarBotoes();
+    procedure AtualizarResultado(mensagem: string);
+    procedure ResolverTransacaoPendente(respostaTransacaoPendente: IRespostaTransacaoPendente);
+    procedure OnRadioButtonNaoUsarMultiTefClick(Sender: TObject);
+    procedure OnRadioButtonUsarMultiTefClick(Sender: TObject);
+    procedure HabilitarControlesMultiTef();
+    procedure CriarMensagemErro(mensagem: PChar);
+    function OperacaoNaoFinalizada(iteracaoTef: IIteracaoTef): boolean;
+    function GerarMensagemTransacaoAprovada : string;
+    procedure ExibirDadosOperacaoAprovada(resposta: IRespostaOperacaoAprovada);
+    procedure ExibirDadosOperacaoRecusada(resposta: IRespostaOperacaoRecusada);
+    procedure FinalizarPagamento();
+    procedure ButtonExecutarCreditoClick(Sender: TObject);
+    procedure ButtonExecutarCrediarioClick(Sender: TObject);
+    procedure ButtonExecutarReimpressaoClick(Sender: TObject);
+    procedure ButtonExecutarCancelamentoClick(Sender: TObject);
+    function FormatarNumeroControle(numeroControle: double) : string;
+    procedure ButtonSolicitarInformacaoPinpadClick(Sender: TObject);
+    procedure ButtonExecutarPagamentoTicketCarClick(Sender: TObject);
+    procedure RadioButtonReimprimirTodasViasClick(Sender: TObject);
+    procedure RadioButtonReimprimirViaLojaClick(Sender: TObject);
+    procedure RadioButtonReimprimirViaClienteClick(Sender: TObject);
+    procedure RadioButtonReimprimirUltimoCupomClick(Sender: TObject);
+    procedure RadioButtonNaoReimprimirUltimoCupomClick(Sender: TObject);
+  private
+    chaveAutenticacao: string;
+    cliente: IClienteCappta;
+    cnpj: string;
+    pdv: Int32;
+    processandoPagamento: boolean;
+    quantidadeCartoes: Int32;
+    sessaoMultiTefEmAndamento: boolean;
+    tipoVia: Integer;
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+const
+  INTERVALO_MILISEGUNDOS: Integer = 500;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  cliente := CoClienteCappta.Create;
+  tipoVia := 1;
+  AutenticarPdv(cliente);
+  ConfigurarModoIntegracao(true);
+  TMemoResultado.Text := String.Empty;
+  LabelQuantidadeDePagamentosMultiTef.Hide();
+  FloatSpinEditQuantidadeDePagamentosMultiTef.Hide();
+end;
+
+procedure TForm1.OnRadioButtonNaoUsarMultiTefClick(Sender: TObject);
+begin
+  if RadioButtonNaoUsarMultiTef.Checked = false then exit;
+
+  sessaoMultiTefEmAndamento:= false;
+  LabelQuantidadeDePagamentosMultiTef.Hide();
+  FloatSpinEditQuantidadeDePagamentosMultiTef.Hide();
+  cliente.DesfazerPagamentos();
+end;
+
+procedure TForm1.OnRadioButtonUsarMultiTefClick(Sender: TObject);
+begin
+  if RadioButtonUsarMultiTef.Checked = false then exit;
+
+  LabelQuantidadeDePagamentosMultiTef.Show();
+  FloatSpinEditQuantidadeDePagamentosMultiTef.Show();
+end;
+
+procedure TForm1.AutenticarPdv(cliente: IClienteCappta);
+var
+  XMLAutenticacao: TXMLDocument;
+  ChaveAutenticacaoNode: IXMLNode;
+  CnpjNode: IXMLNode;
+  PdvNode: IXMLNode;
+  erro: string;
+  resultadoAutenticacao: integer;
+  valorNumericoCnpj: Int64;
+begin
+  try
+     XMLAutenticacao := TXMLDocument.Create(Self);
+     XMLAutenticacao.LoadFromFile('autenticacao.xml');
+
+     ChaveAutenticacaoNode :=  BuscarNodeXML(XMLAutenticacao, 'chaveAutenticacao');
+     chaveAutenticacao := ChaveAutenticacaoNode.ChildNodes.First.NodeValue;
+
+     CnpjNode := BuscarNodeXML(XMLAutenticacao, 'cnpj');
+     cnpj := CnpjNode.ChildNodes.First.NodeValue;
+     if Length(cnpj) <> 14 then
+        raise Exception.Create('O valor passado na tag <cnpj> não tem 14 digitos (use um CNPJ sem pontuação).');
+     if TryStrToInt64(cnpj, valorNumericoCnpj) = false then
+        raise Exception.Create('O valor passado na tag <cnpj> não é númerico.');
+
+     PdvNode := BuscarNodeXML(XMLAutenticacao, 'pdv');
+     pdv := StrtoIntDef(PdvNode.ChildNodes.First.NodeValue, -1);
+     if pdv = -1 then
+        raise Exception.Create('O valor passado na tag <pdv> não é numérico.');
+
+     resultadoAutenticacao:= cliente.AutenticarPdv(cnpj, pdv, chaveAutenticacao);
+
+     Case resultadoAutenticacao of
+       0 : exit;
+       1 : ShowMessage('Não autorizado. Por favor, realize a autenticação para utilizar o CapptaGpPlus.');
+       2 : ShowMessage('O CapptaGpPlus esta sendo inicializado, tente novamente em alguns instantes.');
+       3 : ShowMessage('O formato da requisição recebida pelo CapptaGpPlus é inválido.');
+       4 : ShowMessage('Operação cancelada pelo operador.');
+       7 : ShowMessage('Ocorreu um erro interno no CapptaGpPlus.');
+       8 : ShowMessage('Ocorreu um erro na comunicação entre a CappAPI e o CapptaGpPlus.');
+
+     end;
+     Application.Terminate;
+  except on ex : Exception do
+     begin
+       erro := Format('%s%s%s%s%s',
+            ['Não foi possível carregar o arquivo "autenticacao.xml".',
+            sLineBreak,
+            sLineBreak,
+            'Erro: ',
+            ex.Message]);
+       ShowMessage(erro);
+       Application.Terminate;
+     end;
+  end;
+end;
+
+function TForm1.BuscarNodeXML(XMLAutenticacao: TXMLDocument; nomeNode: string) : IXMLNode;
+var
+node : IXMLNode;
+  begin
+     node := XMLAutenticacao.DocumentElement.ChildNodes.FindNode(nomeNode);
+
+     if node = nil then
+        raise Exception.Create(Format('Não existe a tag <%s>.', [nomeNode]));
+     if node.NodeValue = String.Empty then
+        raise Exception.Create(Format('A tag <%s> está sem valor definido.', [nomeNode]));
+
+     Result := node;
+  end;
+
+
+procedure TForm1.ButtonExecutarCancelamentoClick(Sender: TObject);
+var
+  numeroControle: string;
+  senhaAdministrativa: string;
+begin
+  if sessaoMultiTefEmAndamento = true then
+  begin
+     CriarMensagemErro('Não é possível cancelar um pagamento com uma sessão multitef em andamento.'); exit;
+  end;
+
+  numeroControle := FormatarNumeroControle(StrToInt64(TextEditNumeroControleCancelamento.Text));
+  senhaAdministrativa:= EditSenhaAdministrativaCancelamento.Text;
+
+  if Length(senhaAdministrativa) = 0 then
+  begin
+     CriarMensagemErro('A senha administrativa não pode ser vazia.');
+     exit;
+  end;
+
+  cliente.CancelarPagamento(senhaAdministrativa, numeroControle);
+
+  processandoPagamento := false;
+  IterarOperacaoTef();
+end;
+
+procedure TForm1.ButtonExecutarCrediarioClick(Sender: TObject);
+var
+  detalhes: DetalhesCrediario;
+  quantidadeParcelas: integer;
+  valor: double;
+begin
+  quantidadeParcelas := Trunc(FloatSpinEditQuantidadeParcelasPagamentoCrediario.Value);
+  valor := StrToFloat(TEditValorPagamentoCredito.Text);
+
+  detalhes := CoDetalhesCrediario.Create;
+  detalhes.QuantidadeParcelas := quantidadeParcelas;
+
+  if (DeveIniciarMultiCartoes()) then
+  begin
+     IniciarMultiCartoes();
+  end;
+
+  cliente.PagamentoCrediario(valor, detalhes);
+
+  processandoPagamento := true;
+  IterarOperacaoTef();
+end;
+
+procedure TForm1.ButtonExecutarCreditoClick(Sender: TObject);
+var
+  detalhes: DetalhesCredito;
+  quantidadeParcelas: integer;
+  tipoParcelamento: integer;
+  transacaoParcelada: boolean;
+  valor: double;
+begin
+  quantidadeParcelas := Trunc(FloatSpinEditQuantidadeParcelasPagamentoCredito.Value);
+  tipoParcelamento := ComboBoxTipoParcelamentoPagamentoCredito.ItemIndex + 1;
+  transacaoParcelada := RadioButtonPagamentoCreditoComParcelas.Checked;
+  valor := StrToFloat(TEditValorPagamentoCrediario.Text);
+
+  detalhes := CoDetalhesCredito.Create;
+  detalhes.QuantidadeParcelas := quantidadeParcelas;
+  detalhes.TransacaoParcelada := transacaoParcelada;
+  detalhes.TipoParcelamento := tipoParcelamento;
+
+  if (DeveIniciarMultiCartoes()) then
+  begin
+     IniciarMultiCartoes();
+  end;
+
+  cliente.PagamentoCredito(valor, detalhes);
+
+  processandoPagamento := true;
+  IterarOperacaoTef();
+end;
+
+procedure TForm1.ButtonExecutarDebitoClick(Sender: TObject);
+var
+  valor: double;
+  exibirInterface: boolean;
+  configs: Configuracoes;
+begin
+
+  valor := StrToFloat(TEditValorPagamentoTicketCar.Text);
+
+  if DeveIniciarMultiCartoes() then
+  begin
+     IniciarMultiCartoes();
+  end;
+
+  cliente.PagamentoDebito(valor);
+
+  processandoPagamento := true;
+  IterarOperacaoTef();
+end;
+
+procedure TForm1.ButtonExecutarPagamentoTicketCarClick(Sender: TObject);
+var
+   detalhesPessoaFisica: IDetalhesPagamentoTicketCarPessoaFisica;
+   valor: double;
+begin
+     valor := FloatSpinEditValorPagamentoTicketCar.Value;
+
+     detalhesPessoaFisica := CoDetalhesPagamentoTicketCarPessoaFisica.Create;
+     detalhesPessoaFisica.NumeroReciboFiscal := EditNumeroDocumentoFiscalTicketCar.Text;
+     detalhesPessoaFisica.NumeroSerialECF := EditNumeroSerialTicketCar.Text;
+
+     cliente.PagamentoTicketCarPessoaFisica(valor, detalhesPessoaFisica);
+
+     processandoPagamento := true;
+     IterarOperacaoTef();
+end;
+
+procedure TForm1.ButtonExecutarReimpressaoClick(Sender: TObject);
+var
+  reimprimirUltimoCupom: boolean;
+  numeroControle: string;
+begin
+  if sessaoMultiTefEmAndamento = true then
+  begin
+     CriarMensagemErro('Não é possível reimprimir um cupom com uma sessão multitef em andamento.'); exit;
+  end;
+
+  reimprimirUltimoCupom := RadioButtonReimprimirUltimoCupom.Checked;
+
+  if (reimprimirUltimoCupom) then
+  begin
+     cliente.ReimprimirUltimoCupom(tipoVia)
+  end
+  else
+  begin
+       numeroControle := FormatarNumeroControle(StrToInt64(TextEditNumeroControleReimpressaoCupom.Text));
+       cliente.ReimprimirCupom(numeroControle, tipoVia);
+  end;
+
+  processandoPagamento := false;
+  IterarOperacaoTef();
+end;
+
+procedure TForm1.ButtonSolicitarInformacaoPinpadClick(Sender: TObject);
+var
+  tipoInformacaoPinpad: integer;
+  requisicaoPinpad: RequisicaoInformacaoPinpad;
+  resultado: string;
+begin
+  tipoInformacaoPinpad := ComboBoxTipoInformacaoPinpad.ItemIndex + 1;
+
+  requisicaoPinpad := CoRequisicaoInformacaoPinpad.Create();
+  requisicaoPinpad.TipoInformacaoPinpad := tipoInformacaoPinpad;
+
+  resultado := cliente.SolicitarInformacoesPinpad(requisicaoPinpad);
+
+  AtualizarResultado(resultado);
+end;
+
+procedure TForm1.CriarMensagemErro(mensagem: PChar);
+begin
+     Application.MessageBox(mensagem, 'Erro', MB_OK);
+end;
+
+function TForm1.FormatarNumeroControle(numeroControle: double) : string;
+var numeroControleTexto: string;
+begin
+  numeroControleTexto := FloatToStr(numeroControle);
+  numeroControleTexto := ReplaceStr(numeroControleTexto.PadLeft(11), ' ', '0');
+
+  Result:= numeroControleTexto;
+end;
+
+procedure TForm1.RadioButtonInterfaceInvisivelClick(Sender: TObject);
+begin
+  ConfigurarModoIntegracao(false);
+end;
+
+procedure TForm1.RadioButtonInterfaceVisivelClick(Sender: TObject);
+begin
+  ConfigurarModoIntegracao(true);
+end;
+
+procedure TForm1.ConfigurarModoIntegracao(exibirInterface: boolean);
+var
+    configs: Configuracoes;
+begin
+     configs := CoConfiguracoes.Create;
+     configs.ExibirInterface := exibirInterface;
+     cliente.Configurar(configs);
+end;
+
+function TForm1.DeveIniciarMultiCartoes() : boolean;
+begin
+     Result:= (sessaoMultiTefEmAndamento = false) and RadioButtonUsarMultiTef.Checked;
+end;
+
+procedure TForm1.IniciarMultiCartoes();
+begin
+  quantidadeCartoes:= Trunc(FloatSpinEditQuantidadeDePagamentosMultiTef.Value);
+  sessaoMultiTefEmAndamento:= true;
+  cliente.IniciarMultiCartoes(quantidadeCartoes);
+end;
+
+procedure TForm1.IterarOperacaoTef();
+var
+  iteracaoTef: IIteracaoTef;
+begin
+  if RadioButtonUsarMultiTef.Enabled then DesabilitarControlesMultiTef();
+  DesabilitarBotoes();
+
+  Repeat
+
+    iteracaoTef := cliente.IterarOperacaoTef();
+
+    if Supports(iteracaoTef, IMensagem) then
+    begin
+       ExibirMensagem(iteracaoTef as IMensagem);
+       Sleep(INTERVALO_MILISEGUNDOS);
+    end;
+
+    if Supports(iteracaoTef, IRequisicaoParametro) then RequisitarParametros(iteracaoTef as IRequisicaoParametro);
+    if Supports(iteracaoTef, IRespostaTransacaoPendente) then ResolverTransacaoPendente(iteracaoTef as IRespostaTransacaoPendente);
+
+    if Supports(iteracaoTef, IRespostaOperacaoRecusada) then ExibirDadosOperacaoRecusada(iteracaoTef as IRespostaOperacaoRecusada);
+    if Supports(iteracaoTef, IRespostaOperacaoAprovada) then
+    begin
+       ExibirDadosOperacaoAprovada(iteracaoTef as IRespostaOperacaoAprovada);
+       FinalizarPagamento();
+    end;
+
+    Until OperacaoNaoFinalizada(iteracaoTef) = false;
+
+  if (sessaoMultiTefEmAndamento = false) then HabilitarControlesMultiTef();
+  HabilitarBotoes();
+end;
+
+function TForm1.GerarMensagemTransacaoAprovada : string;
+var
+  trecho1: string;
+  trecho2: string;
+  mensagem: string;
+begin
+  trecho1 := 'ão';
+  trecho2 := '';
+  mensagem := 'Transaç%s Aprovada%s!!! %s Clique em "OK" para confirmar a%s transaç%s e "Cancelar" para desfazê-la%s.';
+
+  if sessaoMultiTefEmAndamento = true then
+  begin
+     trecho1 := 'ões';
+     trecho2 := 's'
+  end;
+
+  Result := Format(mensagem, [trecho1, trecho2, sLineBreak, trecho2, trecho1, trecho2]);
+end;
+
+function TForm1.OperacaoNaoFinalizada(iteracaoTef: IIteracaoTef): boolean;
+var tipoIteracao: integer;
+begin
+  tipoIteracao := iteracaoTef.TipoIteracao;
+  Result:= (tipoIteracao <> 1) and (tipoIteracao <> 2);
+end;
+
+procedure TForm1.HabilitarControlesMultiTef();
+begin
+  RadioButtonUsarMultiTef.Enabled:= true;
+  RadioButtonNaoUsarMultiTef.Enabled:= true;
+  FloatSpinEditQuantidadeDePagamentosMultiTef.Enabled:= true;
+end;
+
+procedure TForm1.HabilitarBotoes();
+begin
+  ButtonExecutarCancelamento.Enabled:= true;
+  ButtonExecutarCrediario.Enabled:= true;
+  ButtonExecutarCredito.Enabled:= true;
+  ButtonExecutarDebito.Enabled:= true;
+  ButtonExecutarReimpressao.Enabled:= true;
+end;
+
+procedure TForm1.DesabilitarControlesMultiTef();
+begin
+  RadioButtonUsarMultiTef.Enabled:= false;
+  RadioButtonNaoUsarMultiTef.Enabled:= false;
+  FloatSpinEditQuantidadeDePagamentosMultiTef.Enabled:= false;
+end;
+
+procedure TForm1.DesabilitarBotoes();
+begin
+  ButtonExecutarCancelamento.Enabled:= false;
+  ButtonExecutarCrediario.Enabled:= false;
+  ButtonExecutarCredito.Enabled:= false;
+  ButtonExecutarDebito.Enabled:= false;
+  ButtonExecutarReimpressao.Enabled:= false;
+end;
+
+procedure TForm1.RadioButtonNaoReimprimirUltimoCupomClick(Sender: TObject);
+begin
+  LabelNumeroControleReimpressaoCupom.Show();
+  TextEditNumeroControleReimpressaoCupom.Show();
+end;
+
+procedure TForm1.RadioButtonReimprimirTodasViasClick(Sender: TObject);
+begin
+   tipoVia := 1;
+end;
+
+procedure TForm1.RadioButtonReimprimirUltimoCupomClick(Sender: TObject);
+begin
+  LabelNumeroControleReimpressaoCupom.Hide();
+  TextEditNumeroControleReimpressaoCupom.Hide();
+end;
+
+procedure TForm1.RadioButtonReimprimirViaLojaClick(Sender: TObject);
+begin
+   tipoVia := 3;
+end;
+
+procedure TForm1.RequisitarParametros(requisicaoParametros: IRequisicaoParametro);
+var
+  parametro: string;
+  mensagemConvertida: string;
+  acao: Int32;
+begin
+    mensagemConvertida := AnsiToUtf8(requisicaoParametros.Mensagem);
+    parametro := InputBox('Sample API COM', mensagemConvertida, '');
+
+    if Length(parametro) = 0 then
+    begin
+       acao := 2;
+       parametro := ' ';
+    end
+    else begin acao := 1; end;
+
+    cliente.EnviarParametro(parametro, acao);
+end;
+
+procedure TForm1.ResolverTransacaoPendente(respostaTransacaoPendente: IRespostaTransacaoPendente);
+var
+  parametro: string;
+  mensagemConvertida: string;
+  acao: Int32;
+  lowerBound, upperBound, contador: LongInt;
+  listaTransacoes: PSafeArray;
+  transacaoPendente: ITransacaoPendente;
+begin
+     mensagemConvertida := AnsiToUtf8(respostaTransacaoPendente.Mensagem);
+     listaTransacoes := respostaTransacaoPendente.ListaTransacoesPendentes;
+
+     SafeArrayGetLBound(listaTransacoes, 1, lowerBound);
+     SafeArrayGetUBound(listaTransacoes, 1, upperBound);
+     for contador := lowerBound to upperBound do
+      begin
+           SafeArrayGetElement(listaTransacoes, contador, transacaoPendente);
+           mensagemConvertida := Concat(mensagemConvertida, sLineBreak, 'Número de Controle: ', transacaoPendente.numeroControle);
+           mensagemConvertida := Concat(mensagemConvertida, sLineBreak, 'Bandeira: ', transacaoPendente.NomeBandeiraCartao);
+           mensagemConvertida := Concat(mensagemConvertida, sLineBreak, 'Adquirente: ', transacaoPendente.NomeAdquirente);
+           mensagemConvertida := Concat(mensagemConvertida, sLineBreak, 'Valor: ', FloatToStr(transacaoPendente.valor));
+           mensagemConvertida := Concat(mensagemConvertida, sLineBreak, 'Data: ', DateTimeToStr(transacaoPendente.DataHoraAutorizacao));
+      end;
+
+     parametro := InputBox('Sample API COM', mensagemConvertida, '');
+
+     if Length(parametro) = 0 then
+     begin
+       acao := 2;
+       parametro := ' ';
+     end
+     else begin acao := 1; end;
+
+    cliente.EnviarParametro(parametro, acao);
+end;
+
+procedure TForm1.ExibirDadosOperacaoRecusada(resposta: IRespostaOperacaoRecusada);
+var textoCodigoAnsi: string;
+begin
+  textoCodigoAnsi := Utf8ToAnsi('Código');
+  AtualizarResultado(Format('%s: %d%s%s', [textoCodigoAnsi, resposta.CodigoMotivo, sLineBreak, resposta.Motivo]))
+end;
+
+procedure TForm1.ExibirDadosOperacaoAprovada(resposta: IRespostaOperacaoAprovada);
+var mensagemAprovada: string;
+begin
+    mensagemAprovada := String.Empty;
+
+   if (resposta.CupomCliente <> null) then mensagemAprovada := Format('%s%s',[ConcatenarCupons(mensagemAprovada, resposta.CupomCliente), sLineBreak]);
+   if (resposta.CupomLojista <> null) then mensagemAprovada := ConcatenarCupons(mensagemAprovada, resposta.CupomLojista);
+   if (resposta.CupomReduzido <> null) then mensagemAprovada := ConcatenarCupons(mensagemAprovada, resposta.CupomReduzido);
+
+   AtualizarResultado(ReplaceStr(mensagemAprovada, '"', ''));
+end;
+
+function TForm1.ConcatenarCupons(mensagemAprovada: string; cupom: string) : string;
+begin
+  Result:= Format('%s%s%s', [mensagemAprovada, ReplaceStr(cupom, '"', ''), sLineBreak]);
+end;
+
+procedure TForm1.AtualizarResultado(mensagem: string);
+begin
+  TMemoResultado.Text:= AnsiToUtf8(mensagem);
+  TMemoResultado.Repaint;
+end;
+
+procedure TForm1.FinalizarPagamento();
+var botaoSelecionado: Integer;
+var mensagem: string;
+begin
+  if processandoPagamento = false then exit;
+  if sessaoMultiTefEmAndamento then
+  begin
+     botaoSelecionado := 0;
+     quantidadeCartoes:= quantidadeCartoes - 1;
+     if quantidadeCartoes > 0 then exit;
+  end;
+
+  mensagem := GerarMensagemTransacaoAprovada;
+
+  processandoPagamento := false;
+  sessaoMultiTefEmAndamento := false;
+
+  botaoSelecionado := MessageDlg(mensagem, mtConfirmation, mbOKCancel, 0);
+  if botaoSelecionado = mrOK then cliente.ConfirmarPagamentos()
+  else cliente.DesfazerPagamentos();
+
+end;
+
+procedure TForm1.ExibirMensagem(mensagem: IMensagem);
+begin
+  AtualizarResultado(mensagem.Descricao);
+end;
+
+procedure TForm1.RadioButtonReimprimirViaClienteClick(Sender: TObject);
+begin
+   tipoVia := 2;
+end;
+
+end.
+

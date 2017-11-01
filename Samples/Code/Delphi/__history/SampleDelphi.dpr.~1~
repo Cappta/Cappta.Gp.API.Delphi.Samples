@@ -1,0 +1,15 @@
+program SampleDelphi;
+
+uses
+  Vcl.Forms,
+  sample in 'sample.pas' {Form1},
+  Cappta_Gp_Api_Com_TLB in '..\..\18.0\Imports\Cappta_Gp_Api_Com_TLB.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.
