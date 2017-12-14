@@ -1,0 +1,8 @@
+[2017-11-16 18:31:30] Error
+Win32Exception - A operação foi cancelada pelo usuário
+   em System.Diagnostics.Process.StartWithShellExecuteEx(ProcessStartInfo startInfo)
+   em System.Diagnostics.Process.Start()
+   em System.Diagnostics.Process.Start(ProcessStartInfo startInfo)
+   em Cappta.Gp.Api.Com.NamedPipe.ServerConnectionHandler.StartCapptaGpPlus(String pathCapptaGpExe)
+
+
