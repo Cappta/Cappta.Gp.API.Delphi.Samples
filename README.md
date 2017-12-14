@@ -139,6 +139,7 @@ Dentro de IterarOperacaoTef() temos alguns métodos:
 
 <h3>Requisitar Parametros</h3>
 ```javascript
+
 procedure TForm1.RequisitarParametros(requisicaoParametros: IRequisicaoParametro);
 var
   parametro: string;
@@ -198,7 +199,7 @@ begin
 end;
 ```
 
-<h3>ExibirDados Operacao Aprovada</h3>
+<h3>Exibir Dados Operacao Aprovada</h3>
 
 ```javascript
 
