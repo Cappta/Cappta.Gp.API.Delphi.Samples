@@ -1,18 +1,18 @@
-<h1>Integração Delphi<h1>
+<h1>Integração Delphi</h1>
 
       A Dll da Cappta foi desenvolvida utilizando as melhores práticas de programação e desenvolvimento de software. Utilizamos o padrão COM pensando justamente na integração entre aplicações construídas em várias linguagens. O Delphi tem suporte ao padrão COM portanto a integração será simples e fácil.
 
 Obs: Durante a instalação do CapptaGpPlus o mesmo encarrega-se de registrar a DLL em seu computador.
 
-<h3>Primeira etapa para integração.</h3>
-	A primeira etapa consiste na importação do componente (dll) para dentro do projeto. Para isto siga os passos descritos na documentação.
-	A primeira função a ser utilizada é AutenticarPdv().
-	Para autenticar é necessário os seguintes dados: CNPJ, PDV e chave de autenticação, estes dados são os mesmos fornecidos durante a instalação do GP.
+<h3>Primeira etapa para integração.</h3></br>
+	A primeira etapa consiste na importação do componente (dll) para dentro do projeto. Para isto siga os passos descritos na documentação.</br>
+	A primeira função a ser utilizada é AutenticarPdv().</br>
+	Para autenticar é necessário os seguintes dados: CNPJ, PDV e chave de autenticação, estes dados são os mesmos fornecidos durante a instalação do GP.</br>
 	
-Chave: 795180024C04479982560F61B3C2C06E
+Chave: 795180024C04479982560F61B3C2C06E </br>
 OBS: aqui utilizamos um xml para guardar os dados de autenticação
 
-
+´´´ Delphi
 procedure TForm1.AutenticarPdv(cliente: IClienteCappta);
 var
   XMLAutenticacao: TXMLDocument;
@@ -68,7 +68,7 @@ begin
      end;
   end;
 end;
-
+´´´´
 O resultado para autenticação com sucesso é: 0
 
 <h1>Primeiro esforço.</h1>
