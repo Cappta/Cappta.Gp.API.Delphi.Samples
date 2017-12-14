@@ -68,7 +68,7 @@ begin
      end;
   end;
 end;
-´´´´
+```
 O resultado para autenticação com sucesso é: 0
 
 <h1>Primeiro esforço.</h1>
