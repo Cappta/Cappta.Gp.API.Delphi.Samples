@@ -12,7 +12,7 @@ Obs: Durante a instalação do CapptaGpPlus o mesmo encarrega-se de registrar a 
 Chave: 795180024C04479982560F61B3C2C06E </br>
 OBS: aqui utilizamos um xml para guardar os dados de autenticação
 
-´´´ Delphi
+´´´ C#
 procedure TForm1.AutenticarPdv(cliente: IClienteCappta);
 var
   XMLAutenticacao: TXMLDocument;
