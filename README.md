@@ -1,15 +1,18 @@
-IntegraÁ„o Delphi
+<h1>Integra√ß√£o Delphi<h1>
 
-      A Dll da Cappta foi desenvolvida utilizando as melhores pr·ticas de programaÁ„o e desenvolvimento de software. Utilizamos o padr„o COM pensando justamente na integraÁ„o entre aplicaÁıes construÌdas em v·rias linguagens. O Delphi tem suporte ao padr„o COM portanto a integraÁ„o ser· simples e f·cil.
+      A Dll da Cappta foi desenvolvida utilizando as melhores pr√°ticas de programa√ß√£o e desenvolvimento de software. Utilizamos o padr√£o COM pensando justamente na integra√ß√£o entre aplica√ß√µes constru√≠das em v√°rias linguagens. O Delphi tem suporte ao padr√£o COM portanto a integra√ß√£o ser√° simples e f√°cil.
 
-Obs: Durante a instalaÁ„o do CapptaGpPlus o mesmo encarrega-se de registrar a DLL em seu computador.
+Obs: Durante a instala√ß√£o do CapptaGpPlus o mesmo encarrega-se de registrar a DLL em seu computador.
 
-Primeira etapa para integraÁ„o.
-	A primeira etapa consiste na importaÁ„o do componente (dll) para dentro do projeto. Para isto siga os passos descritos na documentaÁ„o.
-	A primeira funÁ„o a ser utilizada È AutenticarPdv().
-	Para autenticar È necess·rio os seguintes dados: CNPJ, PDV e chave de autenticaÁ„o, estes dados s„o os mesmos fornecidos durante a instalaÁ„o do GP.
+<h3>Primeira etapa para integra√ß√£o.</h3>
+	A primeira etapa consiste na importa√ß√£o do componente (dll) para dentro do projeto. Para isto siga os passos descritos na documenta√ß√£o.
+	A primeira fun√ß√£o a ser utilizada √© AutenticarPdv().
+	Para autenticar √© necess√°rio os seguintes dados: CNPJ, PDV e chave de autentica√ß√£o, estes dados s√£o os mesmos fornecidos durante a instala√ß√£o do GP.
+	
 Chave: 795180024C04479982560F61B3C2C06E
-OBS: aqui utilizamos um xml para guardar os dados de autenticaÁ„o
+OBS: aqui utilizamos um xml para guardar os dados de autentica√ß√£o
+
+
 procedure TForm1.AutenticarPdv(cliente: IClienteCappta);
 var
   XMLAutenticacao: TXMLDocument;
@@ -30,32 +33,32 @@ begin
      CnpjNode := BuscarNodeXML(XMLAutenticacao, 'cnpj');
      cnpj := CnpjNode.ChildNodes.First.NodeValue;
      if Length(cnpj) <> 14 then
-        raise Exception.Create('O valor passado na tag <cnpj> n„o tem 14 digitos (use um CNPJ sem pontuaÁ„o).');
+        raise Exception.Create('O valor passado na tag <cnpj> n√£o tem 14 digitos (use um CNPJ sem pontua√ß√£o).');
      if TryStrToInt64(cnpj, valorNumericoCnpj) = false then
-        raise Exception.Create('O valor passado na tag <cnpj> n„o È n˙merico.');
+        raise Exception.Create('O valor passado na tag <cnpj> n√£o √© n√∫merico.');
 
      PdvNode := BuscarNodeXML(XMLAutenticacao, 'pdv');
      pdv := StrtoIntDef(PdvNode.ChildNodes.First.NodeValue, -1);
      if pdv = -1 then
-        raise Exception.Create('O valor passado na tag <pdv> n„o È numÈrico.');
+        raise Exception.Create('O valor passado na tag <pdv> n√£o √© num√©rico.');
 
      resultadoAutenticacao:= cliente.AutenticarPdv(cnpj, pdv, chaveAutenticacao);
 
      Case resultadoAutenticacao of
        0 : exit;
-       1 : ShowMessage('N„o autorizado. Por favor, realize a autenticaÁ„o para utilizar o CapptaGpPlus.');
+       1 : ShowMessage('N√£o autorizado. Por favor, realize a autentica√ß√£o para utilizar o CapptaGpPlus.');
        2 : ShowMessage('O CapptaGpPlus esta sendo inicializado, tente novamente em alguns instantes.');
-       3 : ShowMessage('O formato da requisiÁ„o recebida pelo CapptaGpPlus È inv·lido.');
-       4 : ShowMessage('OperaÁ„o cancelada pelo operador.');
+       3 : ShowMessage('O formato da requisi√ß√£o recebida pelo CapptaGpPlus √© inv√°lido.');
+       4 : ShowMessage('Opera√ß√£o cancelada pelo operador.');
        7 : ShowMessage('Ocorreu um erro interno no CapptaGpPlus.');
-       8 : ShowMessage('Ocorreu um erro na comunicaÁ„o entre a CappAPI e o CapptaGpPlus.');
+       8 : ShowMessage('Ocorreu um erro na comunica√ß√£o entre a CappAPI e o CapptaGpPlus.');
 
      end;
      Application.Terminate;
   except on ex : Exception do
      begin
        erro := Format('%s%s%s%s%s',
-            ['N„o foi possÌvel carregar o arquivo "autenticacao.xml".',
+            ['N√£o foi poss√≠vel carregar o arquivo "autenticacao.xml".',
             sLineBreak,
             sLineBreak,
             'Erro: ',
@@ -65,9 +68,10 @@ begin
      end;
   end;
 end;
-O resultado para autenticaÁ„o com sucesso È: 0
 
-Primeiro esforÁo.
-	Toda vez que realizar uma aÁ„o com o GP, vai perceber que ele comeÁa a exibir o cÛdigo 2 para autenticaÁ„o, n„o se preocupe È assim mesmo, para recuperar os estados do GP, vamos direto para a etapa 2.
+O resultado para autentica√ß√£o com sucesso √©: 0
 
+<h1>Primeiro esfor√ßo.</h1>
+	Toda vez que realizar uma a√ß√£o com o GP, vai perceber que ele come√ßa a exibir o c√≥digo 2 para autentica√ß√£o, n√£o se preocupe √© assim mesmo, para recuperar os estados do GP, vamos direto para a etapa 2.
 
+<h1> Etapa 2 </h1>
