@@ -249,3 +249,182 @@ end;
 ```
 
 <h1> Quarta etapa </h1>
+
+Parabéns agora falta pouco, lembrando que a qualquer momento você pode entrar em contato com a equipe tecnica.
+Tel: (11) 4302-6179.
+
+Por se tratar de um ambiente de testes, pode ser utilizado cartões reais para as transações, não sera cobrado nada em sua fatura. Se precisar pode utilizar os cartões presentes em nosso [roteiro de teste](http://docs.desktop.cappta.com.br/docs/portf%C3%B3lio-de-cart%C3%B5es-de-testes). Lembrando que vendas digitadas é permitido apenas para a modalidade crédito.
+
+Vamos para a elaboração dos metodos para pagamento.
+
+O primiro é pagamento débito, o mais simples.
+
+```javascript
+procedure TForm1.ButtonExecutarDebitoClick(Sender: TObject);
+var
+  valor: double;
+  exibirInterface: boolean;
+  configs: Configuracoes;
+begin
+
+  valor := StrToFloat(TEditValorPagamentoDebito.Text);
+
+  if DeveIniciarMultiCartoes() then
+  begin
+     IniciarMultiCartoes();
+  end;
+
+  cliente.PagamentoDebito(valor);
+
+  processandoPagamento := true;
+  IterarOperacaoTef();
+end;
+```
+<h3>Agora pagamento credito:</h3>
+```javascript
+procedure TForm1.ButtonExecutarCreditoClick(Sender: TObject);
+var
+  detalhes: DetalhesCredito;
+  quantidadeParcelas: integer;
+  tipoParcelamento: integer;
+  transacaoParcelada: boolean;
+  valor: double;
+begin
+  quantidadeParcelas := Trunc(FloatSpinEditQuantidadeParcelasPagamentoCredito.Value);
+  tipoParcelamento := ComboBoxTipoParcelamentoPagamentoCredito.ItemIndex + 1;
+  transacaoParcelada := RadioButtonPagamentoCreditoComParcelas.Checked;
+  valor := StrToFloat(TEditValorPagamentoCredito.Text);
+
+  detalhes := CoDetalhesCredito.Create;
+  detalhes.QuantidadeParcelas := quantidadeParcelas;
+  detalhes.TransacaoParcelada := transacaoParcelada;
+  detalhes.TipoParcelamento := tipoParcelamento;
+
+  if (DeveIniciarMultiCartoes()) then
+  begin
+     IniciarMultiCartoes();
+  end;
+
+  cliente.PagamentoCredito(valor, detalhes);
+
+  processandoPagamento := true;
+  IterarOperacaoTef();
+end;
+end;
+```
+
+<h3>Crediário </h3>
+```javascript
+procedure TForm1.ButtonExecutarCrediarioClick(Sender: TObject);
+var
+  detalhes: DetalhesCrediario;
+  quantidadeParcelas: integer;
+  valor: double;
+begin
+  quantidadeParcelas := Trunc(FloatSpinEditQuantidadeParcelasPagamentoCrediario.Value);
+  valor := StrToFloat(TEditValorPagamentoCrediario.Text);
+
+  detalhes := CoDetalhesCrediario.Create;
+  detalhes.QuantidadeParcelas := quantidadeParcelas;
+
+  if (DeveIniciarMultiCartoes()) then
+  begin
+     IniciarMultiCartoes();
+  end;
+
+  cliente.PagamentoCrediario(valor, detalhes);
+
+  processandoPagamento := true;
+  IterarOperacaoTef();
+end;
+```
+<h1>Etapa 5 </h1>
+**Funções administrativas**
+
+Agora que tratamos as formas de pagamento, podemos partir para as funções administrativas. 
+
+Clientes com frequência pedem a reimpressão de um comprovante ou um cancelamento, as funções administrativas tem a função de deixar praticas e acessiveis estas funções.
+
+<h3>Para reimpressão </h3>
+Temos as seguintes formas: 
+
+**Reimpressão por número de controle
+**Reimpressão cupom lojista
+**Reimpressão cupom cliente
+**Reimpressão de todas as vias
+
+```javascript
+procedure TForm1.ButtonExecutarReimpressaoClick(Sender: TObject);
+var
+  reimprimirUltimoCupom: boolean;
+  numeroControle: string;
+begin
+  if sessaoMultiTefEmAndamento = true then
+  begin
+     CriarMensagemErro('Não é possível reimprimir um cupom com uma sessão multitef em andamento.'); exit;
+  end;
+
+  reimprimirUltimoCupom := RadioButtonReimprimirUltimoCupom.Checked;
+
+  if (reimprimirUltimoCupom) then
+  begin
+     cliente.ReimprimirUltimoCupom(tipoVia)
+  end
+  else
+  begin
+       numeroControle := FormatarNumeroControle(StrToInt64(TextEditNumeroControleReimpressaoCupom.Text));
+       cliente.ReimprimirCupom(numeroControle, tipoVia);
+  end;
+
+  processandoPagamento := false;
+  IterarOperacaoTef();
+end;
+```
+
+<h3>Para Cancelamento </h3>
+
+Para cancelar uma transação é preciso do número de controle e da senha administrativa, esta senha é configurável no Pinpad e por padrão é: **cappta**.  O número de controle é informado na resposta da operação aprovada.
+
+```javascript
+procedure TForm1.ButtonExecutarCancelamentoClick(Sender: TObject);
+var
+  numeroControle: string;
+  senhaAdministrativa: string;
+begin
+  if sessaoMultiTefEmAndamento = true then
+  begin
+     CriarMensagemErro('Não é possível cancelar um pagamento com uma sessão multitef em andamento.'); exit;
+  end;
+
+  numeroControle := FormatarNumeroControle(StrToInt64(TextEditNumeroControleCancelamento.Text));
+  senhaAdministrativa:= EditSenhaAdministrativaCancelamento.Text;
+
+  if Length(senhaAdministrativa) = 0 then
+  begin
+     CriarMensagemErro('A senha administrativa não pode ser vazia.');
+     exit;
+  end;
+
+  cliente.CancelarPagamento(senhaAdministrativa, numeroControle);
+
+  processandoPagamento := false;
+  IterarOperacaoTef();
+end;
+```
+<h1> Etapa 6 </>
+
+Agora que ja fizemos 80% da integração precisamos trabalhar no Multicartões.
+
+Multicartões ou MultiTef é uma forma de passar mais de um cartão em uma transação, nossa forma de realizar esta tarefa é diferente, se cancelarmos uma venda no meio de uma transação multtef todas são canceladas.
+
+```javascript
+procedure TForm1.IniciarMultiCartoes();
+begin
+  quantidadeCartoes:= Trunc(FloatSpinEditQuantidadeDePagamentosMultiTef.Value);
+  sessaoMultiTefEmAndamento:= true;
+  cliente.IniciarMultiCartoes(quantidadeCartoes);
+end;
+```
+
+Para o código completo basta clonar o repositório, qualquer dúvida entre em contato com o time de homologação e parceria Cappta.
+Quando completar a integração basta acessar nossa documentação e seguir os passos do nosso [roteiro](http://docs.desktop.cappta.com.br/docs). 
