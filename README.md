@@ -258,7 +258,7 @@ Por se tratar de um ambiente de testes, pode ser utilizado cartões reais para a
 
 Vamos para a elaboração dos metodos para pagamento.
 
-O primiro é pagamento débito, o mais simples.
+O primeiro é pagamento débito, o mais simples.
 
 ```javascript
 procedure TForm1.ButtonExecutarDebitoClick(Sender: TObject);
