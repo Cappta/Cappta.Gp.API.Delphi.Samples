@@ -416,7 +416,7 @@ begin
   IterarOperacaoTef();
 end;
 ```
-<h1> Etapa 6 </>
+<h1> Etapa 6 <h1/>
 
 Agora que ja fizemos 80% da integração precisamos trabalhar no Multicartões.
 
