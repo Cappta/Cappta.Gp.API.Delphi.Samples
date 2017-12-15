@@ -8,7 +8,7 @@ Obs: Durante a instalação do CapptaGpPlus o mesmo encarrega-se de registrar a 
 
  A primeira etapa consiste na importação do componente (dll) para dentro do projeto. Para isto siga os passos descritos na documentação.</br>
 	
-A primeira função a ser utilizada é AutenticarPdv().</br>
+A primeira função a ser utilizada é **AutenticarPdv()**.</br>
      
 Para autenticar é necessário os seguintes dados: CNPJ, PDV e chave de autenticação, estes dados são os mesmos fornecidos durante a instalação do GP.</br>
 	
@@ -246,6 +246,6 @@ begin
   else cliente.DesfazerPagamentos();
 
 end;
-
-
 ```
+
+<h1> Quarta etapa </h1>
