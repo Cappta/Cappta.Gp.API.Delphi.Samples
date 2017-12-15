@@ -248,9 +248,10 @@ begin
 end;
 ```
 
-<h1> Quarta etapa </h1>
+<h1>Etapa 4</h1>
 
 Parabéns agora falta pouco, lembrando que a qualquer momento você pode entrar em contato com a equipe tecnica.
+
 Tel: (11) 4302-6179.
 
 Por se tratar de um ambiente de testes, pode ser utilizado cartões reais para as transações, não sera cobrado nada em sua fatura. Se precisar pode utilizar os cartões presentes em nosso [roteiro de teste](http://docs.desktop.cappta.com.br/docs/portf%C3%B3lio-de-cart%C3%B5es-de-testes). Lembrando que vendas digitadas é permitido apenas para a modalidade crédito.
@@ -281,6 +282,7 @@ begin
 end;
 ```
 <h3>Agora pagamento credito:</h3>
+
 ```javascript
 procedure TForm1.ButtonExecutarCreditoClick(Sender: TObject);
 var
@@ -309,7 +311,7 @@ begin
 
   processandoPagamento := true;
   IterarOperacaoTef();
-end;
+
 end;
 ```
 
@@ -338,8 +340,10 @@ begin
   IterarOperacaoTef();
 end;
 ```
+
 <h1>Etapa 5 </h1>
-**Funções administrativas**
+
+**Funções** **administrativas**
 
 Agora que tratamos as formas de pagamento, podemos partir para as funções administrativas. 
 
@@ -348,10 +352,10 @@ Clientes com frequência pedem a reimpressão de um comprovante ou um cancelamen
 <h3>Para reimpressão </h3>
 Temos as seguintes formas: 
 
-**Reimpressão por número de controle
-**Reimpressão cupom lojista
-**Reimpressão cupom cliente
-**Reimpressão de todas as vias
+*Reimpressão por número de controle
+*Reimpressão cupom lojista
+*Reimpressão cupom cliente
+*Reimpressão de todas as vias
 
 ```javascript
 procedure TForm1.ButtonExecutarReimpressaoClick(Sender: TObject);
