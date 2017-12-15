@@ -81,7 +81,7 @@ O resultado para autenticação com sucesso é: 0
 <h1> Etapa 2 </h1>
 
 Temos duas formas de integração, a visivel, onde a interação com o usuário fica por conta da Cappta, e a invisivel onde o form pode ser personalizado.
-![Cappta](https://lh6.googleusercontent.com/mHAmYDnZuE3f-be9SVgdzGL3JNX9rNthNSa0mJcLLPA-OqIwhI-VgWjR9ouktqJuhorEDOxtLXGkf1BnN9tg=w1858-h989)
+
 
 <h3>Para configurar o modo de integração</h3>
 
