@@ -344,7 +344,7 @@ end;
 
 <h1>Etapa 5 </h1>
 
-**Funções** **administrativas**
+**Funções administrativas**
 
 Agora que tratamos as formas de pagamento, podemos partir para as funções administrativas. 
 
@@ -433,3 +433,21 @@ end;
 
 Para o código completo basta clonar o repositório, qualquer dúvida entre em contato com o time de homologação e parceria Cappta.
 Quando completar a integração basta acessar nossa documentação e seguir os passos do nosso [roteiro](http://docs.desktop.cappta.com.br/docs). 
+=======
+**Configurando e usando:**
+
+------------------------------------------------------------
+
+- Instale e execute o CapptaGpPlus.exe com os dados forneceidos pela equipe;
+
+- Execute o CapptaGpPlus;
+
+- Extraia e abra o diretório Cappta.Gp.API.Delphi.Samples-master;
+
+- Abra o arquivo autenticacao.xml (Samples\Binaries\Delphi\Win32\Debug) em um editor de texto e configure os parametros "cnpj" e "pdv" com os dados fornecidos para instalação do CapptaGpPlus (não alterar a Chave de Autenticação); 
+**Ex.:**
+ chaveAutenticacao>795180024C04479982560F61B3C2C06E</chaveAutenticacao
+ cnpj>00000000000000</cnpj
+ pdv>14</pdv
+
+- Execute o SampleDelphi.exe ou use o código do projeto para fazer as transações de testes.
