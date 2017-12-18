@@ -50,7 +50,7 @@ object Form1: TForm1
     Top = 40
     Width = 721
     Height = 454
-    ActivePage = TabSheetPagamentoDebito
+    ActivePage = TabSheetCancelamento
     Anchors = [akLeft, akTop, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -578,11 +578,11 @@ object Form1: TForm1
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
-    MaxValue = 0
+    MaxValue = 9
     MinValue = 2
     ParentFont = False
     TabOrder = 3
-    Value = 2
+    Value = 0
   end
   object GroupBoxResultado: TGroupBox
     Left = 735
