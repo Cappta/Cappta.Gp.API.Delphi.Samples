@@ -72,6 +72,17 @@ type
     TEditValorPagamentoCrediario: TMaskEdit;
     TEditValorPagamentoCredito: TMaskEdit;
     TEditValorPagamentoTicketCar: TMaskEdit;
+    TabSheet2: TTabSheet;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    CriarPreAutorizacaoValor: TEdit;
+    Label1: TLabel;
+    CriarPreAutorizacao: TButton;
+    CapturarPreAutorizacaoControle: TEdit;
+    CapturarPreAutorizacaoValor: TEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    CapturarPreAutorizacao: TButton;
     procedure AutenticarPdv(cliente: IClienteCappta);
     procedure RadioButtonInterfaceVisivelClick(Sender: TObject);
     procedure RadioButtonInterfaceInvisivelClick(Sender: TObject);
