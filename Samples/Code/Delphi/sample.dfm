@@ -538,8 +538,6 @@ object Form1: TForm1
     object TabSheet2: TTabSheet
       Caption = 'Pr'#233' Autoriza'#231#227'o'
       ImageIndex = 7
-      ExplicitLeft = 0
-      ExplicitTop = 46
       object GroupBox1: TGroupBox
         Left = 24
         Top = 48
@@ -576,6 +574,7 @@ object Form1: TForm1
           ParentFont = False
           TabOrder = 1
           WordWrap = True
+          OnClick = CriarPreAutorizacaoClick
         end
       end
       object GroupBox2: TGroupBox
@@ -628,6 +627,7 @@ object Form1: TForm1
           ParentFont = False
           TabOrder = 2
           WordWrap = True
+          OnClick = CapturarPreAutorizacaoClick
         end
       end
     end

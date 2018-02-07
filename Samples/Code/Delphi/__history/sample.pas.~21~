@@ -72,6 +72,17 @@ type
     TEditValorPagamentoCrediario: TMaskEdit;
     TEditValorPagamentoCredito: TMaskEdit;
     TEditValorPagamentoTicketCar: TMaskEdit;
+    TabSheet2: TTabSheet;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    CriarPreAutorizacaoValor: TEdit;
+    Label1: TLabel;
+    CriarPreAutorizacao: TButton;
+    CapturarPreAutorizacaoControle: TEdit;
+    CapturarPreAutorizacaoValor: TEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    CapturarPreAutorizacao: TButton;
     procedure AutenticarPdv(cliente: IClienteCappta);
     procedure RadioButtonInterfaceVisivelClick(Sender: TObject);
     procedure RadioButtonInterfaceInvisivelClick(Sender: TObject);
@@ -113,6 +124,7 @@ type
     procedure RadioButtonNaoReimprimirUltimoCupomClick(Sender: TObject);
     procedure RadioButtonPagamentoCreditoSemParcelasClick(Sender: TObject);
     procedure RadioButtonPagamentoCreditoComParcelasClick(Sender: TObject);
+    procedure CriarPreAutorizacaoClick(Sender: TObject);
   private
     chaveAutenticacao: string;
     cliente: IClienteCappta;
@@ -402,6 +414,20 @@ begin
      Application.MessageBox(mensagem, 'Erro', MB_OK);
 end;
 
+procedure TForm1.CriarPreAutorizacaoClick(Sender: TObject);
+var
+  valor: double;
+  exibirInterface: boolean;
+begin
+
+  valor := StrToFloat(CriarPreAutorizacaoValor.Text);
+
+  cliente.PreAutorizacaoPagamentoCredito(valor);
+
+  processandoPagamento := true;
+  IterarOperacaoTef();
+end;
+
 function TForm1.FormatarNumeroControle(numeroControle: double) : string;
 var numeroControleTexto: string;
 begin
@@ -643,7 +669,7 @@ begin
    if (resposta.CupomLojista <> null) then mensagemAprovada := ConcatenarCupons(mensagemAprovada, resposta.CupomLojista);
    if (resposta.CupomReduzido <> null) then mensagemAprovada := ConcatenarCupons(mensagemAprovada, resposta.CupomReduzido);
 
-   AtualizarResultado(ReplaceStr(mensagemAprovada, '"', ''));
+   AtualizarResultado(mensagemAprovada);
 end;
 
 function TForm1.ConcatenarCupons(mensagemAprovada: string; cupom: string) : string;
