@@ -6,7 +6,9 @@ Obs: Durante a instalação do CapptaGpPlus o mesmo encarrega-se de registrar a 
 
 <h3>Primeira etapa para integração.</h3></br>
 
- A primeira etapa consiste na importação do componente (dll) para dentro do projeto. Para isto siga os passos descritos na documentação.</br>
+<h4>Tempo estimado de 01:00 hora</h4>
+
+ A primeira etapa consiste na importação do componente (dll) para dentro do projeto. Faça o seguinte: Component + Import Component + Import a Type Library + Cappta.Gp.Api.Com.tlb, para mais informações consulte a  <a href="http://docs.desktop.cappta.com.br/v1.0/reference#importando-cappapi">documentação </a></br>
 	
 A primeira função a ser utilizada é **AutenticarPdv()**.</br>
      
@@ -75,10 +77,12 @@ end;
 ```
 O resultado para autenticação com sucesso é: 0
 
-<h1>Primeiro esforço.</h1>
+<h1>Atenção.</h1>
 	Toda vez que realizar uma ação com o GP, vai perceber que ele começa a exibir o código 2 para autenticação, não se preocupe é assim mesmo, para recuperar os estados do GP, vamos direto para a etapa 3.
 
 <h1> Etapa 2 </h1>
+
+<h4> Tempo estimado de 00:40 minutos </h4>
 
 Temos duas formas de integração, a visivel, onde a interação com o usuário fica por conta da Cappta, e a invisivel onde o form pode ser personalizado.
 
@@ -97,6 +101,8 @@ end;
 ```
 
 <h1>Etapa 3</h1>
+
+<h4>Tempo estimado de 01:00 hora</h4>
 
 Conforme mencionado acima a Iteração Tef é muito importante para o perfeito funcionamento da integração, toda as ações de venda e administrativas passam por esta função. 
 
@@ -250,6 +256,8 @@ end;
 
 <h1>Etapa 4</h1>
 
+<h4>Tempo estimado de 01:00 hora </h4>
+
 Parabéns agora falta pouco, lembrando que a qualquer momento você pode entrar em contato com a equipe tecnica.
 
 Tel: (11) 4302-6179.
@@ -344,6 +352,8 @@ end;
 
 <h1>Etapa 5 </h1>
 
+<h4>Tempo estimado de 01:00 hora</h4>
+
 **Funções administrativas**
 
 Agora que tratamos as formas de pagamento, podemos partir para as funções administrativas. 
@@ -417,6 +427,8 @@ begin
 end;
 ```
 <h1> Etapa 6 </h1>
+
+<h4> Tempo estimado de 01:00 hora </h4>
 
 Agora que ja fizemos 80% da integração precisamos trabalhar no Multicartões.
 
