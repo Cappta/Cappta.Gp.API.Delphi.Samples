@@ -50,7 +50,7 @@ object Form1: TForm1
     Top = 40
     Width = 721
     Height = 454
-    ActivePage = TabSheetCancelamento
+    ActivePage = TabSheet2
     Anchors = [akLeft, akTop, akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -535,6 +535,102 @@ object Form1: TForm1
         Text = '        ,  '
       end
     end
+    object TabSheet2: TTabSheet
+      Caption = 'Pr'#233' Autoriza'#231#227'o'
+      ImageIndex = 7
+      object GroupBox1: TGroupBox
+        Left = 24
+        Top = 48
+        Width = 641
+        Height = 129
+        Caption = 'Criar Pr'#233' Autoriza'#231#227'o de Cr'#233'dito'
+        TabOrder = 0
+        object Label1: TLabel
+          Left = 32
+          Top = 39
+          Width = 37
+          Height = 19
+          Caption = 'Valor'
+        end
+        object CriarPreAutorizacaoValor: TEdit
+          Left = 32
+          Top = 72
+          Width = 153
+          Height = 27
+          TabOrder = 0
+          Text = '0,10'
+        end
+        object CriarPreAutorizacao: TButton
+          Left = 500
+          Top = 32
+          Width = 125
+          Height = 81
+          Caption = 'Criar Pr'#233' Autoriza'#231#227'o'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          WordWrap = True
+          OnClick = CriarPreAutorizacaoClick
+        end
+      end
+      object GroupBox2: TGroupBox
+        Left = 24
+        Top = 208
+        Width = 641
+        Height = 137
+        Caption = 'Capturar Pr'#233' Autoriza'#231#227'o de Cr'#233'dito'
+        TabOrder = 1
+        object Label2: TLabel
+          Left = 32
+          Top = 48
+          Width = 60
+          Height = 19
+          Caption = 'Controle'
+        end
+        object Label3: TLabel
+          Left = 216
+          Top = 48
+          Width = 37
+          Height = 19
+          Caption = 'Valor'
+        end
+        object CapturarPreAutorizacaoControle: TEdit
+          Left = 32
+          Top = 80
+          Width = 153
+          Height = 27
+          TabOrder = 0
+        end
+        object CapturarPreAutorizacaoValor: TEdit
+          Left = 216
+          Top = 80
+          Width = 129
+          Height = 27
+          TabOrder = 1
+          Text = '0,10'
+        end
+        object CapturarPreAutorizacao: TButton
+          Left = 500
+          Top = 32
+          Width = 125
+          Height = 89
+          Caption = 'Capturar Pr'#233' Autorizacao'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+          WordWrap = True
+          OnClick = CapturarPreAutorizacaoClick
+        end
+      end
+    end
   end
   object RadioButtonUsarMultiTef: TRadioButton
     Left = 128
@@ -582,7 +678,7 @@ object Form1: TForm1
     MinValue = 2
     ParentFont = False
     TabOrder = 3
-    Value = 0
+    Value = 2
   end
   object GroupBoxResultado: TGroupBox
     Left = 735

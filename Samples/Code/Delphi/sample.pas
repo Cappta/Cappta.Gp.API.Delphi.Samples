@@ -72,6 +72,17 @@ type
     TEditValorPagamentoCrediario: TMaskEdit;
     TEditValorPagamentoCredito: TMaskEdit;
     TEditValorPagamentoTicketCar: TMaskEdit;
+    TabSheet2: TTabSheet;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    CriarPreAutorizacaoValor: TEdit;
+    Label1: TLabel;
+    CriarPreAutorizacao: TButton;
+    CapturarPreAutorizacaoControle: TEdit;
+    CapturarPreAutorizacaoValor: TEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    CapturarPreAutorizacao: TButton;
     procedure AutenticarPdv(cliente: IClienteCappta);
     procedure RadioButtonInterfaceVisivelClick(Sender: TObject);
     procedure RadioButtonInterfaceInvisivelClick(Sender: TObject);
@@ -113,6 +124,8 @@ type
     procedure RadioButtonNaoReimprimirUltimoCupomClick(Sender: TObject);
     procedure RadioButtonPagamentoCreditoSemParcelasClick(Sender: TObject);
     procedure RadioButtonPagamentoCreditoComParcelasClick(Sender: TObject);
+    procedure CriarPreAutorizacaoClick(Sender: TObject);
+    procedure CapturarPreAutorizacaoClick(Sender: TObject);
   private
     chaveAutenticacao: string;
     cliente: IClienteCappta;
@@ -400,6 +413,36 @@ end;
 procedure TForm1.CriarMensagemErro(mensagem: PChar);
 begin
      Application.MessageBox(mensagem, 'Erro', MB_OK);
+end;
+
+
+procedure TForm1.CapturarPreAutorizacaoClick(Sender: TObject);
+var
+  valor: double;
+  controle: string;
+begin
+
+  controle := CapturarPreAutorizacaoControle.Text;
+  valor := StrToFloat(CapturarPreAutorizacaoValor.Text);
+
+  cliente.CapturarPreAutorizacaoPagamentoCredito(controle, valor);
+
+  processandoPagamento := true;
+  IterarOperacaoTef();
+end;
+
+
+procedure TForm1.CriarPreAutorizacaoClick(Sender: TObject);
+var
+  valor: double;
+begin
+
+  valor := StrToFloat(CriarPreAutorizacaoValor.Text);
+
+  cliente.PreAutorizacaoPagamentoCredito(valor);
+
+  processandoPagamento := true;
+  IterarOperacaoTef();
 end;
 
 function TForm1.FormatarNumeroControle(numeroControle: double) : string;
